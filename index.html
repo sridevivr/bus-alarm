@@ -6,401 +6,424 @@
   <title>Bus Alarm</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    /* ── Reset & tokens ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --terracotta: #c1614f;
-      --terracotta-dark: #a84e3d;
-      --terracotta-light: #f2e0db;
-      --terracotta-faint: #fdf6f4;
-      --text: #2d2522;
-      --text-muted: #7a6460;
-      --border: #e0cdc9;
-      --white: #ffffff;
-      --radius: 12px;
+      --tc:        #c1614f;
+      --tc-dark:   #a84e3d;
+      --tc-light:  #f2e0db;
+      --tc-faint:  #fdf6f4;
+      --text:      #2d2522;
+      --muted:     #7a6460;
+      --border:    #e0cdc9;
+      --white:     #ffffff;
+      --r:         12px;
+      --safe:      #3db885;
+      --amber:     #e8963a;
+      --danger:    #e05252;
     }
 
     body {
       font-family: 'Nunito', sans-serif;
-      background-color: var(--terracotta-faint);
+      background: var(--tc-faint);
       color: var(--text);
       min-height: 100vh;
-      display: flex;
+    }
+
+    /* ── Screen switcher ─────────────────────────────── */
+    .screen {
+      display: none;
       flex-direction: column;
       align-items: center;
       padding: 24px 16px 48px;
+      min-height: 100vh;
     }
+    .screen.active { display: flex; }
 
-    header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .bus-icon {
-      font-size: 48px;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    header h1 {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--terracotta);
-      letter-spacing: -0.3px;
-    }
-
-    header p {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
+    /* ── Shared card ─────────────────────────────────── */
     .card {
       background: var(--white);
       border-radius: 20px;
       padding: 28px 24px;
       width: 100%;
       max-width: 440px;
-      box-shadow: 0 4px 24px rgba(193, 97, 79, 0.10);
+      box-shadow: 0 4px 24px rgba(193,97,79,.10);
     }
 
-    .field {
-      margin-bottom: 24px;
+    /* ═══════════════════════════════════════════════
+       SETUP SCREEN
+    ═══════════════════════════════════════════════ */
+    #screen-setup header {
+      text-align: center;
+      margin-bottom: 32px;
     }
+    .bus-icon { font-size: 48px; line-height: 1; margin-bottom: 8px; }
+    #screen-setup h1 {
+      font-size: 1.8rem; font-weight: 800;
+      color: var(--tc); letter-spacing: -.3px;
+    }
+    #screen-setup header p { font-size: .95rem; color: var(--muted); margin-top: 4px; }
+
+    .field { margin-bottom: 24px; }
 
     label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 8px;
+      display: block; font-size: .85rem; font-weight: 700;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: .6px; margin-bottom: 8px;
     }
 
     input[type="text"] {
-      width: 100%;
-      padding: 12px 16px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      background: var(--terracotta-faint);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%; padding: 12px 16px;
+      font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 600;
+      color: var(--text); background: var(--tc-faint);
+      border: 2px solid var(--border); border-radius: var(--r);
+      outline: none; transition: border-color .2s, box-shadow .2s;
     }
-
     input[type="text"]:focus {
-      border-color: var(--terracotta);
-      box-shadow: 0 0 0 3px rgba(193, 97, 79, 0.15);
+      border-color: var(--tc);
+      box-shadow: 0 0 0 3px rgba(193,97,79,.15);
     }
+    input[type="text"]::placeholder { color: #c4adaa; font-weight: 400; }
 
-    input[type="text"]::placeholder {
-      color: #c4adaa;
-      font-weight: 400;
-    }
-
-    .stop-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .stop-row input[type="text"] {
-      flex: 1;
-    }
+    .stop-row { display: flex; gap: 10px; align-items: center; }
+    .stop-row input[type="text"] { flex: 1; }
 
     .btn-find {
-      flex-shrink: 0;
-      padding: 12px 18px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--terracotta);
-      background: var(--terracotta-light);
-      border: 2px solid var(--terracotta-light);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      white-space: nowrap;
+      flex-shrink: 0; padding: 12px 18px;
+      font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 700;
+      color: var(--tc); background: var(--tc-light);
+      border: 2px solid var(--tc-light); border-radius: var(--r);
+      cursor: pointer; transition: background .2s, border-color .2s; white-space: nowrap;
     }
-
-    .btn-find:hover {
-      background: #e8c8c2;
-      border-color: #e8c8c2;
-    }
-
-    .btn-find:active {
-      background: #d9b0a9;
-    }
+    .btn-find:hover { background: #e8c8c2; border-color: #e8c8c2; }
+    .btn-find:active { background: #d9b0a9; }
+    .btn-find:disabled { opacity: .6; cursor: wait; }
 
     /* Slider */
     .slider-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 8px;
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 8px;
     }
-
-    .slider-value {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--terracotta);
-    }
-
-    .slider-value span {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
+    .slider-value { font-size: 1.4rem; font-weight: 800; color: var(--tc); }
+    .slider-value span { font-size: .85rem; font-weight: 600; color: var(--muted); }
 
     input[type="range"] {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 100%;
-      height: 6px;
-      background: var(--terracotta-light);
-      border-radius: 99px;
-      outline: none;
-      cursor: pointer;
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px;
+      background: var(--tc-light); border-radius: 99px;
+      outline: none; cursor: pointer;
     }
-
     input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      background: var(--terracotta);
-      border-radius: 50%;
-      border: 3px solid var(--white);
-      box-shadow: 0 2px 6px rgba(193, 97, 79, 0.4);
-      transition: transform 0.15s;
+      -webkit-appearance: none; appearance: none;
+      width: 24px; height: 24px; background: var(--tc);
+      border-radius: 50%; border: 3px solid var(--white);
+      box-shadow: 0 2px 6px rgba(193,97,79,.4); transition: transform .15s;
     }
-
-    input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
-    }
-
+    input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
     input[type="range"]::-moz-range-thumb {
-      width: 24px;
-      height: 24px;
-      background: var(--terracotta);
-      border-radius: 50%;
-      border: 3px solid var(--white);
-      box-shadow: 0 2px 6px rgba(193, 97, 79, 0.4);
-      cursor: pointer;
+      width: 24px; height: 24px; background: var(--tc);
+      border-radius: 50%; border: 3px solid var(--white);
+      box-shadow: 0 2px 6px rgba(193,97,79,.4); cursor: pointer;
     }
-
     .slider-ticks {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      padding: 0 2px;
-      font-size: 0.75rem;
-      color: #c4adaa;
-      font-weight: 600;
+      display: flex; justify-content: space-between;
+      margin-top: 6px; padding: 0 2px;
+      font-size: .75rem; color: #c4adaa; font-weight: 600;
     }
 
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 28px 0;
-    }
+    .divider { height: 1px; background: var(--border); margin: 28px 0; }
 
     .btn-start {
-      width: 100%;
-      padding: 16px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--white);
-      background: var(--terracotta);
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      letter-spacing: 0.2px;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-      box-shadow: 0 4px 14px rgba(193, 97, 79, 0.35);
+      width: 100%; padding: 16px;
+      font-family: 'Nunito', sans-serif; font-size: 1.1rem; font-weight: 800;
+      color: var(--white); background: var(--tc);
+      border: none; border-radius: var(--r); cursor: pointer; letter-spacing: .2px;
+      transition: background .2s, transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 14px rgba(193,97,79,.35);
     }
+    .btn-start:hover { background: var(--tc-dark); box-shadow: 0 6px 18px rgba(193,97,79,.45); }
+    .btn-start:active { transform: scale(.98); }
+    .btn-start:disabled { background: #d4b5af; box-shadow: none; cursor: not-allowed; }
 
-    .btn-start:hover {
-      background: var(--terracotta-dark);
-      box-shadow: 0 6px 18px rgba(193, 97, 79, 0.45);
-    }
-
-    .btn-start:active {
-      transform: scale(0.98);
-    }
-
-    .btn-start:disabled {
-      background: #d4b5af;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-
-    /* Stop results list */
+    /* Stop results */
     .stop-results {
-      margin-top: 10px;
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      max-height: 220px;
-      overflow-y: auto;
+      margin-top: 10px; border: 2px solid var(--border);
+      border-radius: var(--r); overflow: hidden;
+      max-height: 220px; overflow-y: auto;
     }
-
-    .stop-results:empty {
-      display: none;
-    }
-
+    .stop-results:empty { display: none; }
     .stop-item {
-      display: flex;
-      flex-direction: column;
-      padding: 12px 14px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-      user-select: none;
+      display: flex; flex-direction: column; padding: 12px 14px;
+      cursor: pointer; border-bottom: 1px solid var(--border);
+      transition: background .15s; user-select: none;
     }
-
-    .stop-item:last-child {
-      border-bottom: none;
-    }
-
-    .stop-item:hover {
-      background: var(--terracotta-faint);
-    }
-
-    .stop-item.selected {
-      background: var(--terracotta-light);
-    }
-
-    .stop-item-name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .stop-item-id {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
+    .stop-item:last-child { border-bottom: none; }
+    .stop-item:hover { background: var(--tc-faint); }
+    .stop-item.selected { background: var(--tc-light); }
+    .stop-item-name { font-size: .95rem; font-weight: 700; color: var(--text); }
+    .stop-item-id { font-size: .78rem; font-weight: 600; color: var(--muted); margin-top: 2px; }
 
     .stop-message {
-      margin-top: 10px;
-      padding: 12px 14px;
-      border-radius: var(--radius);
-      font-size: 0.9rem;
-      font-weight: 600;
+      margin-top: 10px; padding: 12px 14px;
+      border-radius: var(--r); font-size: .9rem; font-weight: 600;
+    }
+    .stop-message.error { background: #fdf0ee; color: var(--tc-dark); border: 2px solid #f2d0ca; }
+    .stop-message.loading { background: var(--tc-faint); color: var(--muted); border: 2px solid var(--border); }
+
+    .stop-results::-webkit-scrollbar { width: 6px; }
+    .stop-results::-webkit-scrollbar-track { background: var(--tc-faint); }
+    .stop-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    footer { margin-top: 24px; font-size: .8rem; color: #c4adaa; text-align: center; }
+
+    /* ═══════════════════════════════════════════════
+       MONITOR SCREEN
+    ═══════════════════════════════════════════════ */
+    .monitor-topbar {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      width: 100%; max-width: 440px; margin-bottom: 28px;
     }
 
-    .stop-message.error {
-      background: #fdf0ee;
-      color: var(--terracotta-dark);
-      border: 2px solid #f2d0ca;
+    .monitor-route-badge {
+      display: inline-block; background: var(--tc); color: var(--white);
+      font-size: .85rem; font-weight: 800;
+      padding: 3px 12px; border-radius: 99px;
+      letter-spacing: .3px; margin-bottom: 5px;
     }
 
-    .stop-message.loading {
-      background: var(--terracotta-faint);
-      color: var(--text-muted);
-      border: 2px solid var(--border);
+    .monitor-stop-name {
+      font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.25;
     }
 
-    /* Scrollbar styling for results */
-    .stop-results::-webkit-scrollbar {
-      width: 6px;
+    .btn-settings {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.3rem; color: var(--muted);
+      padding: 6px; border-radius: 8px; line-height: 1; flex-shrink: 0;
+      transition: color .2s, background .2s;
     }
-    .stop-results::-webkit-scrollbar-track {
-      background: var(--terracotta-faint);
+    .btn-settings:hover { color: var(--text); background: var(--tc-light); }
+
+    /* ── Countdown ring ──────────────────────────── */
+    .countdown-wrapper {
+      position: relative; width: 220px; height: 220px;
+      margin: 0 auto 32px;
+      --ring-color: var(--safe); /* default */
     }
-    .stop-results::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 99px;
+    .countdown-wrapper.amber  { --ring-color: var(--amber); }
+    .countdown-wrapper.danger { --ring-color: var(--danger); }
+    .countdown-wrapper.unknown { --ring-color: #c4adaa; }
+
+    .ring-svg {
+      width: 100%; height: 100%;
+      transform: rotate(-90deg); /* start fill from 12 o'clock */
+    }
+    .ring-bg { fill: none; stroke: #f0e6e3; stroke-width: 14; }
+    .ring-fill {
+      fill: none;
+      stroke: var(--ring-color);
+      stroke-width: 14;
+      stroke-linecap: round;
+      transition: stroke-dashoffset .9s cubic-bezier(.4,0,.2,1), stroke .4s ease;
     }
 
-    footer {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: #c4adaa;
-      text-align: center;
+    .countdown-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .countdown-number {
+      font-size: 4.5rem; font-weight: 800; line-height: 1;
+      color: var(--ring-color); transition: color .4s ease;
+    }
+    .countdown-unit {
+      font-size: .95rem; font-weight: 700; color: var(--muted);
+      margin-top: 4px; text-transform: uppercase; letter-spacing: .5px;
+    }
+
+    /* ── Other buses ─────────────────────────────── */
+    .other-section { width: 100%; max-width: 440px; margin-bottom: 20px; }
+
+    .other-section-title {
+      font-size: .78rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px;
+    }
+
+    .other-buses-card {
+      background: var(--white); border-radius: 16px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(193,97,79,.08);
+    }
+
+    .bus-row {
+      display: flex; align-items: center;
+      padding: 12px 16px; gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .bus-row:last-child { border-bottom: none; }
+
+    .bus-route-pill {
+      flex-shrink: 0; background: var(--tc-light); color: var(--tc-dark);
+      font-size: .8rem; font-weight: 800;
+      padding: 3px 10px; border-radius: 99px;
+      min-width: 52px; text-align: center;
+    }
+
+    .bus-direction {
+      flex: 1; font-size: .9rem; font-weight: 600; color: var(--text);
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    }
+
+    .bus-mins {
+      flex-shrink: 0; font-size: 1rem; font-weight: 800; color: var(--muted);
+    }
+    .bus-mins em { font-style: normal; font-size: .75rem; font-weight: 600; }
+
+    .other-empty {
+      padding: 18px; text-align: center;
+      font-size: .9rem; color: var(--muted); font-weight: 600;
+    }
+
+    /* ── Status line ─────────────────────────────── */
+    .status-line {
+      font-size: .8rem; font-weight: 600; color: #c4adaa;
+      text-align: center; width: 100%; max-width: 440px;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="bus-icon">🚌</div>
-    <h1>Bus Alarm</h1>
-    <p>Never miss your stop again</p>
-  </header>
+  <!-- ════════════ SETUP SCREEN ════════════ -->
+  <div id="screen-setup" class="screen active">
 
-  <div class="card">
+    <header>
+      <div class="bus-icon">🚌</div>
+      <h1>Bus Alarm</h1>
+      <p>Never miss your stop again</p>
+    </header>
 
-    <div class="field">
-      <label for="bus-route">Bus Route</label>
-      <input type="text" id="bus-route" placeholder="e.g. D50" autocomplete="off" />
+    <div class="card">
+
+      <div class="field">
+        <label for="bus-route">Bus Route</label>
+        <input type="text" id="bus-route" placeholder="e.g. D50" autocomplete="off" />
+      </div>
+
+      <div class="field">
+        <label for="stop-name">Stop Name</label>
+        <div class="stop-row">
+          <input type="text" id="stop-name" placeholder="e.g. Central Station" autocomplete="off" />
+          <button class="btn-find" id="btn-find">Find</button>
+        </div>
+        <div id="stop-feedback"></div>
+        <div class="stop-results" id="stop-results"></div>
+      </div>
+
+      <div class="field">
+        <div class="slider-header">
+          <label for="alert-minutes" style="margin-bottom:0">Alert me</label>
+          <div class="slider-value"><span id="minutes-display">10</span> <span>min before</span></div>
+        </div>
+        <input type="range" id="alert-minutes" min="2" max="20" value="10" />
+        <div class="slider-ticks">
+          <span>2</span><span>5</span><span>10</span><span>15</span><span>20</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="btn-start" id="btn-start" disabled>Start Watching 🔔</button>
+
     </div>
 
-    <div class="field">
-      <label for="stop-name">Stop Name</label>
-      <div class="stop-row">
-        <input type="text" id="stop-name" placeholder="e.g. Central Station" autocomplete="off" />
-        <button class="btn-find" id="btn-find">Find</button>
-      </div>
-      <div id="stop-feedback"></div>
-      <div class="stop-results" id="stop-results"></div>
-    </div>
-
-    <div class="field">
-      <div class="slider-header">
-        <label for="alert-minutes" style="margin-bottom:0">Alert me</label>
-        <div class="slider-value"><span id="minutes-display">10</span> <span>min before</span></div>
-      </div>
-      <input type="range" id="alert-minutes" min="2" max="20" value="10" />
-      <div class="slider-ticks">
-        <span>2</span>
-        <span>5</span>
-        <span>10</span>
-        <span>15</span>
-        <span>20</span>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <button class="btn-start" id="btn-start" disabled>Start Watching 🔔</button>
+    <footer>Stay on track, wherever you ride.</footer>
 
   </div>
 
-  <footer>Stay on track, wherever you ride.</footer>
+  <!-- ════════════ MONITOR SCREEN ════════════ -->
+  <div id="screen-monitor" class="screen">
+
+    <div class="monitor-topbar">
+      <div>
+        <div class="monitor-route-badge" id="monitor-route-badge">--</div>
+        <div class="monitor-stop-name" id="monitor-stop-name">--</div>
+      </div>
+      <button class="btn-settings" id="btn-settings" title="Back to setup">⚙️</button>
+    </div>
+
+    <div class="countdown-wrapper unknown" id="countdown-wrapper">
+      <svg class="ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="ring-bg"   cx="100" cy="100" r="84" />
+        <circle class="ring-fill" cx="100" cy="100" r="84" id="ring-fill" />
+      </svg>
+      <div class="countdown-center">
+        <div class="countdown-number" id="countdown-number">--</div>
+        <div class="countdown-unit">min</div>
+      </div>
+    </div>
+
+    <div class="other-section">
+      <div class="other-section-title">Also at this stop</div>
+      <div class="other-buses-card" id="other-buses-card">
+        <div class="other-empty">Loading…</div>
+      </div>
+    </div>
+
+    <div class="status-line" id="status-line">Fetching predictions…</div>
+
+  </div>
 
   <script>
+    /* ── Config ───────────────────────────────────────── */
     const WMATA_API_KEY = 'YOUR_WMATA_API_KEY_HERE';
+    const RING_MAX_MIN  = 20;   // minutes at which ring is completely empty
+    const POLL_SECONDS  = 60;
 
-    const slider      = document.getElementById('alert-minutes');
-    const display     = document.getElementById('minutes-display');
-    const btnFind     = document.getElementById('btn-find');
-    const btnStart    = document.getElementById('btn-start');
-    const resultsEl   = document.getElementById('stop-results');
-    const feedbackEl  = document.getElementById('stop-feedback');
-    const stopInput   = document.getElementById('stop-name');
+    const CIRCUMFERENCE = 2 * Math.PI * 84; // matches r=84 in SVG
 
-    let selectedStop = null;
+    /* ── DOM ──────────────────────────────────────────── */
+    const screenSetup        = document.getElementById('screen-setup');
+    const screenMonitor      = document.getElementById('screen-monitor');
 
+    // Setup
+    const slider             = document.getElementById('alert-minutes');
+    const minutesDisplay     = document.getElementById('minutes-display');
+    const btnFind            = document.getElementById('btn-find');
+    const btnStart           = document.getElementById('btn-start');
+    const resultsEl          = document.getElementById('stop-results');
+    const feedbackEl         = document.getElementById('stop-feedback');
+    const stopInput          = document.getElementById('stop-name');
+
+    // Monitor
+    const monitorRouteBadge  = document.getElementById('monitor-route-badge');
+    const monitorStopName    = document.getElementById('monitor-stop-name');
+    const btnSettings        = document.getElementById('btn-settings');
+    const countdownWrapper   = document.getElementById('countdown-wrapper');
+    const ringFill           = document.getElementById('ring-fill');
+    const countdownNumber    = document.getElementById('countdown-number');
+    const otherBusesCard     = document.getElementById('other-buses-card');
+    const statusLine         = document.getElementById('status-line');
+
+    /* ── Runtime state ────────────────────────────────── */
+    let selectedStop  = null;
+    let watchConfig   = null;  // { route, stop: {StopID, Name}, alertMinutes }
+    let tickTimer     = null;
+    let tickCountdown = POLL_SECONDS;
+    let lastUpdatedAt = '';
+
+    // Init ring to fully-empty
+    ringFill.style.strokeDasharray  = CIRCUMFERENCE;
+    ringFill.style.strokeDashoffset = CIRCUMFERENCE;
+
+    /* ════════════════════════════════════════════════════
+       SETUP SCREEN LOGIC
+    ════════════════════════════════════════════════════ */
     slider.addEventListener('input', () => {
-      display.textContent = slider.value;
+      minutesDisplay.textContent = slider.value;
     });
 
-    function setFeedback(message, type) {
-      feedbackEl.innerHTML = message
-        ? `<div class="stop-message ${type}">${message}</div>`
+    function setFeedback(msg, type) {
+      feedbackEl.innerHTML = msg
+        ? `<div class="stop-message ${type}">${msg}</div>`
         : '';
     }
 
@@ -451,27 +474,19 @@
       try {
         const url = `https://api.wmata.com/Bus.svc/json/jRouteDetails?RouteID=${encodeURIComponent(route)}&api_key=${WMATA_API_KEY}`;
         const res = await fetch(url);
-
-        if (!res.ok) {
-          throw new Error(`API returned ${res.status}`);
-        }
-
+        if (!res.ok) throw new Error(`${res.status}`);
         const data = await res.json();
 
-        // Collect stops from both directions, deduplicate by StopID
         const seen = new Set();
         const allStops = [];
         for (const dir of [data.Direction0, data.Direction1]) {
           if (!dir || !Array.isArray(dir.Stops)) continue;
-          for (const stop of dir.Stops) {
-            if (!seen.has(stop.StopID)) {
-              seen.add(stop.StopID);
-              allStops.push(stop);
-            }
+          for (const s of dir.Stops) {
+            if (!seen.has(s.StopID)) { seen.add(s.StopID); allStops.push(s); }
           }
         }
 
-        if (allStops.length === 0) {
+        if (!allStops.length) {
           setFeedback(`No stops found for route "${route}". Try a different route.`, 'error');
           return;
         }
@@ -481,15 +496,13 @@
           : allStops;
 
         setFeedback('', '');
+        filtered.length
+          ? renderStops(filtered)
+          : setFeedback(`No stops matching "${stopInput.value}" on route ${route}.`, 'error');
 
-        if (filtered.length === 0) {
-          setFeedback(`No stops matching "${stopInput.value}" on route ${route}.`, 'error');
-        } else {
-          renderStops(filtered);
-        }
       } catch (err) {
-        console.error('WMATA API error:', err);
-        setFeedback('Couldn\'t load stops. Check your route and try again.', 'error');
+        console.error('WMATA route API error:', err);
+        setFeedback("Couldn't load stops. Check your route and try again.", 'error');
       } finally {
         btnFind.disabled = false;
         btnFind.textContent = 'Find';
@@ -497,14 +510,135 @@
     });
 
     btnStart.addEventListener('click', () => {
-      const route = document.getElementById('bus-route').value.trim();
-      const minutes = slider.value;
-      console.log('Start Watching', {
-        route,
-        stop: selectedStop,
-        alertMinutes: Number(minutes),
-      });
+      watchConfig = {
+        route:        document.getElementById('bus-route').value.trim().toUpperCase(),
+        stop:         selectedStop,
+        alertMinutes: Number(slider.value),
+      };
+      enterMonitor();
     });
+
+    btnSettings.addEventListener('click', () => {
+      stopPolling();
+      screenMonitor.classList.remove('active');
+      screenSetup.classList.add('active');
+    });
+
+    /* ════════════════════════════════════════════════════
+       MONITOR SCREEN LOGIC
+    ════════════════════════════════════════════════════ */
+    function enterMonitor() {
+      screenSetup.classList.remove('active');
+      screenMonitor.classList.add('active');
+
+      monitorRouteBadge.textContent = watchConfig.route;
+      monitorStopName.textContent   = watchConfig.stop.Name;
+
+      // Reset to blank state
+      setRingState(null);
+      otherBusesCard.innerHTML = '<div class="other-empty">Loading…</div>';
+      statusLine.textContent   = 'Fetching predictions…';
+      lastUpdatedAt = '';
+
+      startPolling();
+    }
+
+    function startPolling() {
+      stopPolling();
+      fetchPredictions();
+      tickCountdown = POLL_SECONDS;
+
+      tickTimer = setInterval(() => {
+        tickCountdown--;
+        if (lastUpdatedAt) {
+          statusLine.textContent = `Updated at ${lastUpdatedAt} · next refresh in ${tickCountdown}s`;
+        }
+        if (tickCountdown <= 0) {
+          tickCountdown = POLL_SECONDS;
+          fetchPredictions();
+        }
+      }, 1000);
+    }
+
+    function stopPolling() {
+      clearInterval(tickTimer);
+      tickTimer = null;
+    }
+
+    async function fetchPredictions() {
+      try {
+        const url = `https://api.wmata.com/NextBusService.svc/json/jPredictions?StopID=${encodeURIComponent(watchConfig.stop.StopID)}&api_key=${WMATA_API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`${res.status}`);
+        const data = await res.json();
+
+        renderPredictions(data.Predictions || []);
+
+        const now  = new Date();
+        const h    = now.getHours();
+        const mm   = String(now.getMinutes()).padStart(2, '0');
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        lastUpdatedAt = `${h % 12 || 12}:${mm} ${ampm}`;
+        statusLine.textContent = `Updated at ${lastUpdatedAt} · next refresh in ${tickCountdown}s`;
+
+      } catch (err) {
+        console.error('WMATA predictions error:', err);
+        statusLine.textContent = `Couldn't refresh — retrying in ${tickCountdown}s`;
+      }
+    }
+
+    function renderPredictions(predictions) {
+      // Soonest arrival of the watched route
+      const tracked = predictions
+        .filter(p => p.RouteID.toUpperCase() === watchConfig.route)
+        .sort((a, b) => a.Minutes - b.Minutes)[0] ?? null;
+
+      // Everything else (other routes + later arrivals of same route)
+      const others = predictions
+        .filter(p => p !== tracked)
+        .sort((a, b) => a.Minutes - b.Minutes);
+
+      setRingState(tracked ? tracked.Minutes : null);
+      renderOtherBuses(others);
+    }
+
+    function setRingState(minutes) {
+      const threshold = watchConfig.alertMinutes;
+
+      let state;
+      if (minutes === null || minutes === undefined) {
+        state = 'unknown';
+      } else if (minutes <= threshold) {
+        state = 'danger';
+      } else if (minutes <= threshold + 5) {
+        state = 'amber';
+      } else {
+        state = 'safe';
+      }
+
+      countdownWrapper.className  = `countdown-wrapper ${state}`;
+      countdownNumber.textContent = minutes != null ? String(minutes) : '--';
+
+      // Ring fill: empty when far away, full when arriving
+      const fill   = minutes != null
+        ? Math.max(0, Math.min(1, 1 - minutes / RING_MAX_MIN))
+        : 0;
+      ringFill.style.strokeDashoffset = CIRCUMFERENCE * (1 - fill);
+    }
+
+    function renderOtherBuses(others) {
+      if (!others.length) {
+        otherBusesCard.innerHTML = '<div class="other-empty">No other buses predicted right now</div>';
+        return;
+      }
+      otherBusesCard.innerHTML = others.map(p => `
+        <div class="bus-row">
+          <div class="bus-route-pill">${p.RouteID}</div>
+          <div class="bus-direction">${p.DirectionText || '—'}</div>
+          <div class="bus-mins">${p.Minutes}<em> min</em></div>
+        </div>
+      `).join('');
+    }
   </script>
 
 </body>
