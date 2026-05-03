@@ -583,16 +583,33 @@
       if (!opening) manualStopId.focus();
     });
 
-    function applyManualStop() {
+    async function applyManualStop() {
       const id = manualStopId.value.trim();
       if (!id) { manualStopId.focus(); return; }
+
+      btnUseStop.disabled = true;
+      btnUseStop.textContent = '…';
+
+      let name = `Stop ${id}`;
+      try {
+        const url = `https://api.wmata.com/NextBusService.svc/json/jPredictions?StopID=${encodeURIComponent(id)}&api_key=${WMATA_API_KEY}`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.StopName) name = data.StopName;
+        }
+      } catch (_) { /* keep the fallback name */ }
+
       // Deselect any item chosen via the results list
       document.querySelectorAll('.stop-item').forEach(el => el.classList.remove('selected'));
-      selectedStop  = { StopID: id, Name: `Stop ${id}` };
-      stopInput.value   = selectedStop.Name;
+      selectedStop      = { StopID: id, Name: name };
+      stopInput.value   = name;
       btnStart.disabled = false;
       stopIdPanel.classList.add('hidden');
       stopIdToggle.textContent = 'I know my stop ID';
+
+      btnUseStop.disabled = false;
+      btnUseStop.textContent = 'Use this stop';
     }
 
     btnUseStop.addEventListener('click', applyManualStop);
