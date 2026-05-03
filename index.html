@@ -464,6 +464,20 @@
     ringFill.style.strokeDasharray  = CIRCUMFERENCE;
     ringFill.style.strokeDashoffset = CIRCUMFERENCE;
 
+    /* ── Boot: restore saved config ──────────────────── */
+    (function restoreConfig() {
+      try {
+        const saved = localStorage.getItem('busAlarmConfig');
+        if (!saved) return;
+        const cfg = JSON.parse(saved);
+        if (!cfg.route || !cfg.stop?.StopID || !cfg.stop?.Name || !cfg.alertMinutes) return;
+        watchConfig = cfg;
+        enterMonitor();
+      } catch (e) {
+        localStorage.removeItem('busAlarmConfig');
+      }
+    })();
+
     /* ════════════════════════════════════════════════════
        SETUP SCREEN
     ════════════════════════════════════════════════════ */
@@ -590,6 +604,7 @@
         stop:         selectedStop,
         alertMinutes: Number(slider.value),
       };
+      localStorage.setItem('busAlarmConfig', JSON.stringify(watchConfig));
       enterMonitor();
     });
 
