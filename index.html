@@ -157,6 +157,36 @@
     .stop-results::-webkit-scrollbar-track { background: var(--tc-faint); }
     .stop-results::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
+    .stop-id-toggle {
+      display: block; margin-top: 12px; text-align: center;
+      font-size: .82rem; font-weight: 700; color: var(--muted);
+      background: none; border: none; cursor: pointer; padding: 2px 0;
+      text-decoration: underline; text-underline-offset: 3px;
+      transition: color .15s;
+    }
+    .stop-id-toggle:hover { color: var(--tc); }
+
+    .stop-id-panel {
+      margin-top: 12px; padding: 14px;
+      background: var(--tc-faint); border: 2px solid var(--border);
+      border-radius: var(--r);
+    }
+    .stop-id-panel.hidden { display: none; }
+
+    .stop-id-row { display: flex; gap: 8px; align-items: center; }
+    .stop-id-row input[type="text"] { flex: 1; }
+
+    .btn-use-stop {
+      flex-shrink: 0; padding: 12px 14px;
+      font-family: 'Nunito', sans-serif; font-size: .85rem; font-weight: 700;
+      color: var(--white); background: var(--tc);
+      border: none; border-radius: var(--r);
+      cursor: pointer; white-space: nowrap;
+      transition: background .2s;
+    }
+    .btn-use-stop:hover { background: var(--tc-dark); }
+    .btn-use-stop:active { opacity: .85; }
+
     footer { margin-top: 24px; font-size: .8rem; color: #c4adaa; text-align: center; }
 
     /* ═══════════════════════════════════════════════
@@ -311,6 +341,13 @@
         </div>
         <div id="stop-feedback"></div>
         <div class="stop-results" id="stop-results"></div>
+        <button class="stop-id-toggle" id="stop-id-toggle">I know my stop ID</button>
+        <div class="stop-id-panel hidden" id="stop-id-panel">
+          <div class="stop-id-row">
+            <input type="text" id="manual-stop-id" placeholder="e.g. 1001631" autocomplete="off" inputmode="numeric" />
+            <button class="btn-use-stop" id="btn-use-stop">Use this stop</button>
+          </div>
+        </div>
       </div>
 
       <div class="field">
@@ -519,6 +556,33 @@
         btnFind.textContent = 'Find';
       }
     });
+
+    /* ── Manual stop ID fallback ─────────────────────── */
+    const stopIdToggle = document.getElementById('stop-id-toggle');
+    const stopIdPanel  = document.getElementById('stop-id-panel');
+    const manualStopId = document.getElementById('manual-stop-id');
+    const btnUseStop   = document.getElementById('btn-use-stop');
+
+    stopIdToggle.addEventListener('click', () => {
+      const opening = stopIdPanel.classList.toggle('hidden');
+      stopIdToggle.textContent = opening ? 'I know my stop ID' : 'Hide stop ID entry';
+      if (!opening) manualStopId.focus();
+    });
+
+    function applyManualStop() {
+      const id = manualStopId.value.trim();
+      if (!id) { manualStopId.focus(); return; }
+      // Deselect any item chosen via the results list
+      document.querySelectorAll('.stop-item').forEach(el => el.classList.remove('selected'));
+      selectedStop  = { StopID: id, Name: `Stop ${id}` };
+      stopInput.value   = selectedStop.Name;
+      btnStart.disabled = false;
+      stopIdPanel.classList.add('hidden');
+      stopIdToggle.textContent = 'I know my stop ID';
+    }
+
+    btnUseStop.addEventListener('click', applyManualStop);
+    manualStopId.addEventListener('keydown', e => { if (e.key === 'Enter') applyManualStop(); });
 
     btnStart.addEventListener('click', () => {
       watchConfig = {
