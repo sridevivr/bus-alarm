@@ -54,15 +54,9 @@
     /* ═══════════════════════════════════════════════
        SETUP SCREEN
     ═══════════════════════════════════════════════ */
-    #screen-setup header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    #screen-setup header { text-align: center; margin-bottom: 32px; }
     .bus-icon { font-size: 48px; line-height: 1; margin-bottom: 8px; }
-    #screen-setup h1 {
-      font-size: 1.8rem; font-weight: 800;
-      color: var(--tc); letter-spacing: -.3px;
-    }
+    #screen-setup h1 { font-size: 1.8rem; font-weight: 800; color: var(--tc); letter-spacing: -.3px; }
     #screen-setup header p { font-size: .95rem; color: var(--muted); margin-top: 4px; }
 
     .field { margin-bottom: 24px; }
@@ -80,10 +74,7 @@
       border: 2px solid var(--border); border-radius: var(--r);
       outline: none; transition: border-color .2s, box-shadow .2s;
     }
-    input[type="text"]:focus {
-      border-color: var(--tc);
-      box-shadow: 0 0 0 3px rgba(193,97,79,.15);
-    }
+    input[type="text"]:focus { border-color: var(--tc); box-shadow: 0 0 0 3px rgba(193,97,79,.15); }
     input[type="text"]::placeholder { color: #c4adaa; font-weight: 400; }
 
     .stop-row { display: flex; gap: 10px; align-items: center; }
@@ -100,19 +91,14 @@
     .btn-find:active { background: #d9b0a9; }
     .btn-find:disabled { opacity: .6; cursor: wait; }
 
-    /* Slider */
-    .slider-header {
-      display: flex; justify-content: space-between;
-      align-items: baseline; margin-bottom: 8px;
-    }
+    .slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
     .slider-value { font-size: 1.4rem; font-weight: 800; color: var(--tc); }
     .slider-value span { font-size: .85rem; font-weight: 600; color: var(--muted); }
 
     input[type="range"] {
       -webkit-appearance: none; appearance: none;
       width: 100%; height: 6px;
-      background: var(--tc-light); border-radius: 99px;
-      outline: none; cursor: pointer;
+      background: var(--tc-light); border-radius: 99px; outline: none; cursor: pointer;
     }
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none; appearance: none;
@@ -146,7 +132,6 @@
     .btn-start:active { transform: scale(.98); }
     .btn-start:disabled { background: #d4b5af; box-shadow: none; cursor: not-allowed; }
 
-    /* Stop results */
     .stop-results {
       margin-top: 10px; border: 2px solid var(--border);
       border-radius: var(--r); overflow: hidden;
@@ -164,10 +149,7 @@
     .stop-item-name { font-size: .95rem; font-weight: 700; color: var(--text); }
     .stop-item-id { font-size: .78rem; font-weight: 600; color: var(--muted); margin-top: 2px; }
 
-    .stop-message {
-      margin-top: 10px; padding: 12px 14px;
-      border-radius: var(--r); font-size: .9rem; font-weight: 600;
-    }
+    .stop-message { margin-top: 10px; padding: 12px 14px; border-radius: var(--r); font-size: .9rem; font-weight: 600; }
     .stop-message.error { background: #fdf0ee; color: var(--tc-dark); border: 2px solid #f2d0ca; }
     .stop-message.loading { background: var(--tc-faint); color: var(--muted); border: 2px solid var(--border); }
 
@@ -184,17 +166,12 @@
       display: flex; justify-content: space-between; align-items: flex-start;
       width: 100%; max-width: 440px; margin-bottom: 28px;
     }
-
     .monitor-route-badge {
       display: inline-block; background: var(--tc); color: var(--white);
       font-size: .85rem; font-weight: 800;
-      padding: 3px 12px; border-radius: 99px;
-      letter-spacing: .3px; margin-bottom: 5px;
+      padding: 3px 12px; border-radius: 99px; letter-spacing: .3px; margin-bottom: 5px;
     }
-
-    .monitor-stop-name {
-      font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.25;
-    }
+    .monitor-stop-name { font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.25; }
 
     .btn-settings {
       background: none; border: none; cursor: pointer;
@@ -208,86 +185,104 @@
     .countdown-wrapper {
       position: relative; width: 220px; height: 220px;
       margin: 0 auto 32px;
-      --ring-color: var(--safe); /* default */
+      --ring-color: var(--safe);
     }
     .countdown-wrapper.amber  { --ring-color: var(--amber); }
     .countdown-wrapper.danger { --ring-color: var(--danger); }
     .countdown-wrapper.unknown { --ring-color: #c4adaa; }
 
-    .ring-svg {
-      width: 100%; height: 100%;
-      transform: rotate(-90deg); /* start fill from 12 o'clock */
-    }
+    .ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
     .ring-bg { fill: none; stroke: #f0e6e3; stroke-width: 14; }
     .ring-fill {
-      fill: none;
-      stroke: var(--ring-color);
-      stroke-width: 14;
-      stroke-linecap: round;
+      fill: none; stroke: var(--ring-color); stroke-width: 14; stroke-linecap: round;
       transition: stroke-dashoffset .9s cubic-bezier(.4,0,.2,1), stroke .4s ease;
     }
 
     .countdown-center {
       position: absolute; inset: 0;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
     }
     .countdown-number {
       font-size: 4.5rem; font-weight: 800; line-height: 1;
       color: var(--ring-color); transition: color .4s ease;
     }
-    .countdown-unit {
-      font-size: .95rem; font-weight: 700; color: var(--muted);
-      margin-top: 4px; text-transform: uppercase; letter-spacing: .5px;
-    }
+    .countdown-unit { font-size: .95rem; font-weight: 700; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
 
     /* ── Other buses ─────────────────────────────── */
     .other-section { width: 100%; max-width: 440px; margin-bottom: 20px; }
-
-    .other-section-title {
-      font-size: .78rem; font-weight: 700; color: var(--muted);
-      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px;
-    }
-
-    .other-buses-card {
-      background: var(--white); border-radius: 16px; overflow: hidden;
-      box-shadow: 0 2px 12px rgba(193,97,79,.08);
-    }
-
-    .bus-row {
-      display: flex; align-items: center;
-      padding: 12px 16px; gap: 12px;
-      border-bottom: 1px solid var(--border);
-    }
+    .other-section-title { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
+    .other-buses-card { background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(193,97,79,.08); }
+    .bus-row { display: flex; align-items: center; padding: 12px 16px; gap: 12px; border-bottom: 1px solid var(--border); }
     .bus-row:last-child { border-bottom: none; }
-
-    .bus-route-pill {
-      flex-shrink: 0; background: var(--tc-light); color: var(--tc-dark);
-      font-size: .8rem; font-weight: 800;
-      padding: 3px 10px; border-radius: 99px;
-      min-width: 52px; text-align: center;
-    }
-
-    .bus-direction {
-      flex: 1; font-size: .9rem; font-weight: 600; color: var(--text);
-      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-    }
-
-    .bus-mins {
-      flex-shrink: 0; font-size: 1rem; font-weight: 800; color: var(--muted);
-    }
+    .bus-route-pill { flex-shrink: 0; background: var(--tc-light); color: var(--tc-dark); font-size: .8rem; font-weight: 800; padding: 3px 10px; border-radius: 99px; min-width: 52px; text-align: center; }
+    .bus-direction { flex: 1; font-size: .9rem; font-weight: 600; color: var(--text); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .bus-mins { flex-shrink: 0; font-size: 1rem; font-weight: 800; color: var(--muted); }
     .bus-mins em { font-style: normal; font-size: .75rem; font-weight: 600; }
+    .other-empty { padding: 18px; text-align: center; font-size: .9rem; color: var(--muted); font-weight: 600; }
 
-    .other-empty {
-      padding: 18px; text-align: center;
-      font-size: .9rem; color: var(--muted); font-weight: 600;
+    .status-line { font-size: .8rem; font-weight: 600; color: #c4adaa; text-align: center; width: 100%; max-width: 440px; }
+
+    /* ═══════════════════════════════════════════════
+       ALARM OVERLAY
+    ═══════════════════════════════════════════════ */
+    .alarm-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 32px 24px;
+      background: var(--danger);
+      animation: alarm-bg-pulse 1.1s ease-in-out infinite alternate;
+    }
+    .alarm-overlay.hidden { display: none; }
+
+    @keyframes alarm-bg-pulse {
+      from { background: #e05252; }
+      to   { background: #b53030; }
     }
 
-    /* ── Status line ─────────────────────────────── */
-    .status-line {
-      font-size: .8rem; font-weight: 600; color: #c4adaa;
-      text-align: center; width: 100%; max-width: 440px;
+    .alarm-bus-icon {
+      font-size: 72px; line-height: 1; margin-bottom: 20px;
+      animation: bus-bounce .55s ease-in-out infinite alternate;
     }
+    @keyframes bus-bounce {
+      from { transform: translateY(0) rotate(-3deg); }
+      to   { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    .alarm-heading {
+      font-size: 3rem; font-weight: 800; color: var(--white);
+      letter-spacing: -.5px; margin-bottom: 20px; text-align: center;
+    }
+
+    .alarm-badge-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+
+    .alarm-route-badge {
+      background: rgba(255,255,255,.25); color: var(--white);
+      font-size: 1rem; font-weight: 800;
+      padding: 4px 16px; border-radius: 99px; letter-spacing: .3px;
+    }
+
+    .alarm-mins {
+      font-size: 1.6rem; font-weight: 800; color: var(--white);
+    }
+
+    .alarm-subtext {
+      font-size: 1rem; color: rgba(255,255,255,.8);
+      font-weight: 600; margin-top: 6px; margin-bottom: 40px; text-align: center;
+    }
+
+    .btn-dismiss {
+      padding: 18px 36px;
+      font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 800;
+      color: var(--danger); background: var(--white);
+      border: none; border-radius: 16px; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,0,0,.25);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-dismiss:hover { transform: scale(1.04); box-shadow: 0 8px 28px rgba(0,0,0,.3); }
+    .btn-dismiss:active { transform: scale(.97); }
   </style>
 </head>
 <body>
@@ -372,59 +367,75 @@
 
   </div>
 
+  <!-- ════════════ ALARM OVERLAY ════════════ -->
+  <div id="alarm-overlay" class="alarm-overlay hidden">
+    <div class="alarm-bus-icon">🚌</div>
+    <h2 class="alarm-heading">Time to go!</h2>
+    <div class="alarm-badge-row">
+      <div class="alarm-route-badge" id="alarm-route-badge">--</div>
+      <div class="alarm-mins" id="alarm-mins">-- min away</div>
+    </div>
+    <p class="alarm-subtext">Your bus is almost here</p>
+    <button class="btn-dismiss" id="btn-dismiss">Got it, I'm heading out! 👟</button>
+  </div>
+
   <script>
     /* ── Config ───────────────────────────────────────── */
     const WMATA_API_KEY = '5754b8212b834edfa9f1ab95932dea7f';
-    const RING_MAX_MIN  = 20;   // minutes at which ring is completely empty
+    const RING_MAX_MIN  = 20;
     const POLL_SECONDS  = 60;
-
-    const CIRCUMFERENCE = 2 * Math.PI * 84; // matches r=84 in SVG
+    const CIRCUMFERENCE = 2 * Math.PI * 84;
 
     /* ── DOM ──────────────────────────────────────────── */
-    const screenSetup        = document.getElementById('screen-setup');
-    const screenMonitor      = document.getElementById('screen-monitor');
+    const screenSetup       = document.getElementById('screen-setup');
+    const screenMonitor     = document.getElementById('screen-monitor');
 
-    // Setup
-    const slider             = document.getElementById('alert-minutes');
-    const minutesDisplay     = document.getElementById('minutes-display');
-    const btnFind            = document.getElementById('btn-find');
-    const btnStart           = document.getElementById('btn-start');
-    const resultsEl          = document.getElementById('stop-results');
-    const feedbackEl         = document.getElementById('stop-feedback');
-    const stopInput          = document.getElementById('stop-name');
+    const slider            = document.getElementById('alert-minutes');
+    const minutesDisplay    = document.getElementById('minutes-display');
+    const btnFind           = document.getElementById('btn-find');
+    const btnStart          = document.getElementById('btn-start');
+    const resultsEl         = document.getElementById('stop-results');
+    const feedbackEl        = document.getElementById('stop-feedback');
+    const stopInput         = document.getElementById('stop-name');
 
-    // Monitor
-    const monitorRouteBadge  = document.getElementById('monitor-route-badge');
-    const monitorStopName    = document.getElementById('monitor-stop-name');
-    const btnSettings        = document.getElementById('btn-settings');
-    const countdownWrapper   = document.getElementById('countdown-wrapper');
-    const ringFill           = document.getElementById('ring-fill');
-    const countdownNumber    = document.getElementById('countdown-number');
-    const otherBusesCard     = document.getElementById('other-buses-card');
-    const statusLine         = document.getElementById('status-line');
+    const monitorRouteBadge = document.getElementById('monitor-route-badge');
+    const monitorStopName   = document.getElementById('monitor-stop-name');
+    const btnSettings       = document.getElementById('btn-settings');
+    const countdownWrapper  = document.getElementById('countdown-wrapper');
+    const ringFill          = document.getElementById('ring-fill');
+    const countdownNumber   = document.getElementById('countdown-number');
+    const otherBusesCard    = document.getElementById('other-buses-card');
+    const statusLine        = document.getElementById('status-line');
+
+    const alarmOverlay      = document.getElementById('alarm-overlay');
+    const alarmRouteBadge   = document.getElementById('alarm-route-badge');
+    const alarmMins         = document.getElementById('alarm-mins');
+    const btnDismiss        = document.getElementById('btn-dismiss');
 
     /* ── Runtime state ────────────────────────────────── */
     let selectedStop  = null;
-    let watchConfig   = null;  // { route, stop: {StopID, Name}, alertMinutes }
+    let watchConfig   = null;
     let tickTimer     = null;
     let tickCountdown = POLL_SECONDS;
     let lastUpdatedAt = '';
 
-    // Init ring to fully-empty
+    // Alarm state
+    let alarmFired    = false; // true once fired; cleared when bus departs
+    let audioCtx      = null;
+    let beepTimer     = null;
+
     ringFill.style.strokeDasharray  = CIRCUMFERENCE;
     ringFill.style.strokeDashoffset = CIRCUMFERENCE;
 
     /* ════════════════════════════════════════════════════
-       SETUP SCREEN LOGIC
+       SETUP SCREEN
     ════════════════════════════════════════════════════ */
     slider.addEventListener('input', () => {
       minutesDisplay.textContent = slider.value;
     });
 
     function setFeedback(msg, type) {
-      feedbackEl.innerHTML = msg
-        ? `<div class="stop-message ${type}">${msg}</div>`
-        : '';
+      feedbackEl.innerHTML = msg ? `<div class="stop-message ${type}">${msg}</div>` : '';
     }
 
     function clearResults() {
@@ -519,13 +530,14 @@
     });
 
     btnSettings.addEventListener('click', () => {
+      dismissAlarm();
       stopPolling();
       screenMonitor.classList.remove('active');
       screenSetup.classList.add('active');
     });
 
     /* ════════════════════════════════════════════════════
-       MONITOR SCREEN LOGIC
+       MONITOR SCREEN
     ════════════════════════════════════════════════════ */
     function enterMonitor() {
       screenSetup.classList.remove('active');
@@ -534,12 +546,19 @@
       monitorRouteBadge.textContent = watchConfig.route;
       monitorStopName.textContent   = watchConfig.stop.Name;
 
-      // Reset to blank state
       setRingState(null);
       otherBusesCard.innerHTML = '<div class="other-empty">Loading…</div>';
       statusLine.textContent   = 'Fetching predictions…';
       lastUpdatedAt = '';
+      alarmFired    = false;
 
+      // Warm up AudioContext from within this user-gesture call chain so it
+      // won't be blocked when the alarm fires later.
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      requestNotificationPermission();
       startPolling();
     }
 
@@ -577,8 +596,7 @@
         const now  = new Date();
         const h    = now.getHours();
         const mm   = String(now.getMinutes()).padStart(2, '0');
-        const ampm = h >= 12 ? 'PM' : 'AM';
-        lastUpdatedAt = `${h % 12 || 12}:${mm} ${ampm}`;
+        lastUpdatedAt = `${h % 12 || 12}:${mm} ${h >= 12 ? 'PM' : 'AM'}`;
         statusLine.textContent = `Updated at ${lastUpdatedAt} · next refresh in ${tickCountdown}s`;
 
       } catch (err) {
@@ -588,23 +606,21 @@
     }
 
     function renderPredictions(predictions) {
-      // Soonest arrival of the watched route
       const tracked = predictions
         .filter(p => p.RouteID.toUpperCase() === watchConfig.route)
         .sort((a, b) => a.Minutes - b.Minutes)[0] ?? null;
 
-      // Everything else (other routes + later arrivals of same route)
       const others = predictions
         .filter(p => p !== tracked)
         .sort((a, b) => a.Minutes - b.Minutes);
 
       setRingState(tracked ? tracked.Minutes : null);
       renderOtherBuses(others);
+      maybeFireAlarm(tracked ? tracked.Minutes : null);
     }
 
     function setRingState(minutes) {
       const threshold = watchConfig.alertMinutes;
-
       let state;
       if (minutes === null || minutes === undefined) {
         state = 'unknown';
@@ -619,8 +635,7 @@
       countdownWrapper.className  = `countdown-wrapper ${state}`;
       countdownNumber.textContent = minutes != null ? String(minutes) : '--';
 
-      // Ring fill: empty when far away, full when arriving
-      const fill   = minutes != null
+      const fill = minutes != null
         ? Math.max(0, Math.min(1, 1 - minutes / RING_MAX_MIN))
         : 0;
       ringFill.style.strokeDashoffset = CIRCUMFERENCE * (1 - fill);
@@ -638,6 +653,91 @@
           <div class="bus-mins">${p.Minutes}<em> min</em></div>
         </div>
       `).join('');
+    }
+
+    /* ════════════════════════════════════════════════════
+       ALARM
+    ════════════════════════════════════════════════════ */
+    function maybeFireAlarm(minutes) {
+      const threshold = watchConfig.alertMinutes;
+
+      // Bus has clearly departed when minutes jump well above threshold — arm again
+      if (minutes === null || minutes > threshold + 3) {
+        alarmFired = false;
+      }
+
+      if (minutes !== null && minutes <= threshold && !alarmFired) {
+        alarmFired = true;
+        triggerAlarm(minutes);
+      }
+    }
+
+    function triggerAlarm(minutes) {
+      alarmRouteBadge.textContent = watchConfig.route;
+      alarmMins.textContent       = `${minutes} min away`;
+      alarmOverlay.classList.remove('hidden');
+
+      startBeeping();
+      sendNotification(watchConfig.route, minutes);
+    }
+
+    function dismissAlarm() {
+      alarmOverlay.classList.add('hidden');
+      stopBeeping();
+      // alarmFired stays true so the same approaching bus won't re-trigger
+    }
+
+    btnDismiss.addEventListener('click', dismissAlarm);
+
+    /* ── Web Audio beep pattern ───────────────────────── */
+    function startBeeping() {
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      stopBeeping();
+      scheduleBeepBurst();
+    }
+
+    function scheduleBeepBurst() {
+      if (!audioCtx || audioCtx.state === 'closed') return;
+      const t = audioCtx.currentTime;
+      // Three sharp beeps per burst
+      playBeep(t + 0.00, 0.12, 880);
+      playBeep(t + 0.20, 0.12, 880);
+      playBeep(t + 0.40, 0.12, 1046); // slightly higher pitch on third
+      beepTimer = setTimeout(scheduleBeepBurst, 1600);
+    }
+
+    function playBeep(startTime, duration, freq) {
+      const osc  = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.type            = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.45, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+      osc.start(startTime);
+      osc.stop(startTime + duration + 0.01);
+    }
+
+    function stopBeeping() {
+      clearTimeout(beepTimer);
+      beepTimer = null;
+    }
+
+    /* ── Browser notifications ───────────────────────── */
+    async function requestNotificationPermission() {
+      if ('Notification' in window && Notification.permission === 'default') {
+        await Notification.requestPermission();
+      }
+    }
+
+    function sendNotification(route, minutes) {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      new Notification(`🚌 Route ${route} is almost here!`, {
+        body: `${minutes} minute${minutes !== 1 ? 's' : ''} away — time to head out!`,
+        tag:  'bus-alarm', // replaces any previous notification from this app
+      });
     }
   </script>
 
